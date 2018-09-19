@@ -51,6 +51,7 @@ var Ship = (function () {
     api.createShip = function (opt) {
 
         opt = optionBasicDefaults(opt),
+        keyboard = game.input.keyboard,
         game = opt.game;
 
         // create ship sprite
@@ -65,12 +66,21 @@ var Ship = (function () {
 
         // physics
         game.physics.p2.enable(ship);
-
         ship.body.angularDamping = .75;
 
-        //ship.body.velocity.set(0,-45);
-        //ship.body.moveUp(300);
-        //ship.body.moveRight(300);
+        // up
+        keyboard.addKey(38).onDown.add(function () {
+
+            ship.data.thrust += 0.25;
+
+        });
+
+        // down
+        keyboard.addKey(40).onDown.add(function () {
+
+            ship.data.thrust -= 0.25;
+
+        });
 
     };
 
@@ -90,19 +100,21 @@ var Ship = (function () {
             //ship.body.velocity.x += 20;
             ship.body.angularVelocity += 0.05;
         }
+        /*
         // up
         if (keyboard.isDown(38)) {
-            ship.data.thrust += 1;
-            //ship.body.velocity.y += -20;
+        ship.data.thrust += 1;
+        //ship.body.velocity.y += -20;
         }
         //down
         if (keyboard.isDown(40)) {
-            ship.data.thrust -= 1;
-            //ship.body.velocity.y += 20;
+        ship.data.thrust -= 1;
+        //ship.body.velocity.y += 20;
         }
+         */
 
         // thrust limit
-        ship.data.thrust = Phaser.Math.clamp(ship.data.thrust, -5, 20);
+        ship.data.thrust = Phaser.Math.clamp(ship.data.thrust, -5, 5);
 
         ship.body.velocity.x += Math.cos(ship.angle / 180 * Math.PI) * ship.data.thrust;
         ship.body.velocity.y += Math.sin(ship.angle / 180 * Math.PI) * ship.data.thrust;
@@ -111,6 +123,7 @@ var Ship = (function () {
         ship.body.velocity.x = Phaser.Math.clamp(ship.body.velocity.x, -100, 100);
         ship.body.velocity.y = Phaser.Math.clamp(ship.body.velocity.y, -100, 100);
 
+        // angular velocity limit
         ship.body.angularVelocity = Phaser.Math.clamp(ship.body.angularVelocity, -2.5, 2.5);
 
     };
