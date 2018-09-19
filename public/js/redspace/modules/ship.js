@@ -30,9 +30,15 @@ var Ship = (function () {
         ctx.strokeStyle = '#0000ff';
         ctx.lineWidth = 3;
         ctx.beginPath();
+        /*
         ctx.moveTo(15, 2);
         ctx.lineTo(30, 30);
+        ctx.lineTo(2, 30)*/
+
+        ctx.moveTo(30, 15);
+        ctx.lineTo(2, 2);
         ctx.lineTo(2, 30);
+
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
@@ -52,26 +58,60 @@ var Ship = (function () {
         ship.name = 'ship_player';
         ship.anchor.set(0.5, 0.5);
 
+        ship.data.thrust = 0;
+
         // follow the camera
         game.camera.follow(ship);
 
         // physics
         game.physics.p2.enable(ship);
 
+        ship.body.angularDamping = .75;
+
         //ship.body.velocity.set(0,-45);
-        ship.body.moveUp(300);
-        ship.body.moveRight(300);
+        //ship.body.moveUp(300);
+        //ship.body.moveRight(300);
 
     };
 
     // what to do for each frame tick
-    api.tick = function () {
+    api.tick = function (game) {
 
-        var ship = this.ship;
+        var ship = this.ship,
+        keyboard = game.input.keyboard;
+
+        // left
+        if (keyboard.isDown(37)) {
+            //ship.body.velocity.x += -20;
+            ship.body.angularVelocity -= 0.05;
+        }
+        // right
+        if (keyboard.isDown(39)) {
+            //ship.body.velocity.x += 20;
+            ship.body.angularVelocity += 0.05;
+        }
+        // up
+        if (keyboard.isDown(38)) {
+            ship.data.thrust += 1;
+            //ship.body.velocity.y += -20;
+        }
+        //down
+        if (keyboard.isDown(40)) {
+            ship.data.thrust -= 1;
+            //ship.body.velocity.y += 20;
+        }
+
+        // thrust limit
+        ship.data.thrust = Phaser.Math.clamp(ship.data.thrust, -5, 20);
+
+        ship.body.velocity.x += Math.cos(ship.angle / 180 * Math.PI) * ship.data.thrust;
+        ship.body.velocity.y += Math.sin(ship.angle / 180 * Math.PI) * ship.data.thrust;
 
         // speed limit
         ship.body.velocity.x = Phaser.Math.clamp(ship.body.velocity.x, -100, 100);
         ship.body.velocity.y = Phaser.Math.clamp(ship.body.velocity.y, -100, 100);
+
+        ship.body.angularVelocity = Phaser.Math.clamp(ship.body.angularVelocity, -2.5, 2.5);
 
     };
 

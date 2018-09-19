@@ -52,13 +52,20 @@ game.state.add('boot', {
 
     update: function () {
 
-        Ship.tick();
+        Ship.tick(this.game);
         Background.tick(this.game);
 
         //game.data.disp.text = Ship.ship.x + ',' + Ship.ship.y
         //game.data.disp.text = game.camera.position.x + ',' + game.camera.position.y
-        game.data.disp.text = Ship.ship.body.velocity.x.toFixed(2) + ',' + Ship.ship.body.velocity.y.toFixed(2)
+        //game.data.disp.text = Ship.ship.body.velocity.x.toFixed(2) + ',' + Ship.ship.body.velocity.y.toFixed(2)
 
+		//game.data.disp.text = Ship.ship.body.angularVelocity;
+		
+		//game.data.disp.text = Ship.ship.angle;
+		
+		game.data.disp.text = Ship.ship.data.thrust;
+
+		
     }
 
 });
