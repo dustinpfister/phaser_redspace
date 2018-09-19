@@ -20,6 +20,16 @@ game.state.add('boot', {
         // will be using physics
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        game.world.resize(640, 480);
+
+        Background.mkSheet({
+            game: this.game
+        });
+
+        Background.createTileSprite({
+            game: this.game
+        });
+
         Ship.mkSheet({
             game: this.game
         });
