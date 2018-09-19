@@ -39,8 +39,20 @@ var Background = (function () {
         opt = optionBasicDefaults(opt),
         game = opt.game;
 
-        var tile = game.add.tileSprite(0, 0, game.canvas.width, game.canvas.height, 'sheet-background', 0);
+        var tile = this.tile = game.add.tileSprite(0, 0, game.canvas.width, game.canvas.height, 'sheet-background', 0);
         tile.name = 'tile-background';
+
+        tile.fixedToCamera = true;
+        tile.cameraOffset.set(0,0);
+
+    };
+
+    api.tick = function (game) {
+
+        var x = game.camera.position.x,
+        y = game.camera.position.y;
+
+        this.tile.tilePosition.set(-x, -y);
 
     };
 

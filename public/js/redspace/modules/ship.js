@@ -48,18 +48,27 @@ var Ship = (function () {
         game = opt.game;
 
         // create ship sprite
-        var ship = this.ship = game.add.sprite(0, 0, 'sheet-ship');
+        var ship = this.ship = game.add.sprite(game.canvas.width / 2, game.canvas.height / 2, 'sheet-ship');
         ship.name = 'ship_player';
         ship.anchor.set(0.5, 0.5);
 
         // ship will be fixed to the camera at the center
-        ship.fixedToCamera = true;
-        ship.cameraOffset.set(game.canvas.width / 2, game.canvas.height / 2);
+        //ship.fixedToCamera = true;
+        //ship.cameraOffset.set(game.canvas.width / 2, game.canvas.height / 2);
+
+        game.camera.follow(ship);
 
         // physics
-        game.physics.enable(ship);
+        game.physics.p2.enable(ship);
+
+        //ship.body.velocity.set(0,-45);
+        ship.body.moveUp(300);
+        ship.body.moveRight(300);
 
     };
+
+    // what to do for each frame tick
+    api.tick = function () {};
 
     return api;
 

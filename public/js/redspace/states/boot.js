@@ -18,7 +18,10 @@ game.state.add('boot', {
         game.antialias = false;
 
         // will be using physics
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+        //game.physics.startSystem(Phaser.Physics.ARCADE);
+		
+		game.physics.startSystem(Phaser.Physics.P2JS);
+		
 
         game.world.resize(640, 480);
 
@@ -37,6 +40,21 @@ game.state.add('boot', {
         Ship.createShip({
             game: this.game
         });
+		
+		this.game.data = {};
+		
+		var text = game.data.disp = game.add.text(10,10,'foo',{fill:'#ffff00',font:'15px courier'});
+		text.fixedToCamera = true;
+
+    },
+
+    update: function () {
+
+        Ship.tick();
+		Background.tick(this.game);
+		
+		//game.data.disp.text = Ship.ship.x + ',' + Ship.ship.y
+		game.data.disp.text = game.camera.position.x + ',' + game.camera.position.y
 
     }
 
