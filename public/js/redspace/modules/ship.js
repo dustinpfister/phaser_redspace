@@ -52,10 +52,7 @@ var Ship = (function () {
         ship.name = 'ship_player';
         ship.anchor.set(0.5, 0.5);
 
-        // ship will be fixed to the camera at the center
-        //ship.fixedToCamera = true;
-        //ship.cameraOffset.set(game.canvas.width / 2, game.canvas.height / 2);
-
+        // follow the camera
         game.camera.follow(ship);
 
         // physics
@@ -68,7 +65,15 @@ var Ship = (function () {
     };
 
     // what to do for each frame tick
-    api.tick = function () {};
+    api.tick = function () {
+
+        var ship = this.ship;
+
+        // speed limit
+        ship.body.velocity.x = Phaser.Math.clamp(ship.body.velocity.x, -100, 100);
+        ship.body.velocity.y = Phaser.Math.clamp(ship.body.velocity.y, -100, 100);
+
+    };
 
     return api;
 
