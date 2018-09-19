@@ -44,10 +44,20 @@ var Ship = (function () {
     // create a single ship
     api.createShip = function (opt) {
 
-        opt = optionBasicDefaults(opt);
+        opt = optionBasicDefaults(opt),
+        game = opt.game;
 
-        var ship = opt.game.add.sprite(0, 0, 'sheet-ship');
+        // create ship sprite
+        var ship = this.ship = game.add.sprite(0, 0, 'sheet-ship');
         ship.name = 'ship_player';
+        ship.anchor.set(0.5, 0.5);
+
+        // ship will be fixed to the camera at the center
+        ship.fixedToCamera = true;
+        ship.cameraOffset.set(game.canvas.width / 2, game.canvas.height / 2);
+
+        // physics
+        game.physics.enable(ship);
 
     };
 
